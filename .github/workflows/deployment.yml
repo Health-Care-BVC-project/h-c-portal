@@ -1,0 +1,44 @@
+name: Deploy HCPortal as docker image to Infra repository
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: "npm"
+
+      - run: |
+          docker build -t ${{ secrets.ACR_NAME }}/hcportal-fe-image:latest .
+          mkdir ./docker_image
+          docker save hcportal-fe-image:latest | gzip > ./docker_image/hcportal-fe-image.tar.gz
+
+      - name: "Commit files"
+        run: |
+          git config --local user.email "g.maressolano090@mybvc.ca"
+          git config --local user.name "gh-actions [bot]"
+          git add ./docker_image
+          git commit -a -m "Update frontend docker image"
+
+      - name: Push Docker image to Git infra repo
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.HCPORTAL_INFRA_REPO_PUSH_KEY }}
+          repository: Health-Care-BVC-project/h-c-infra
+          force: true
+          directory: ./docker_image
+          branch: main

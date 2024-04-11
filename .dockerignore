@@ -1,0 +1,6 @@
+.env.local
+.env.example
+README.MD
+/node_modules
+.git
+.gitignore
