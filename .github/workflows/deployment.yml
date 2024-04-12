@@ -38,7 +38,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.HCPORTAL_INFRA_REPO_PUSH_KEY }}
         with:
-          target-directory: "docker_image"
+          target-directory: "frontend_image"
           source-directory: "docker_image"
           destination-github-username: "Health-Care-BVC-project"
           destination-repository-name: "h-c-infra"
