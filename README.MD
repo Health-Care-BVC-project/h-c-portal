@@ -15,28 +15,22 @@ This 1st version is contemplates a unique portal where medics can signup and man
 
 2. Once the code is merge in main branch, a pipeline is executed to dockerize the project and integrate into the infrastructure repository.
 
-## Available Scripts
+## Executing the project
 
-### Running the development server.
+**Local** The project can be tested locally running npm run dev.
 
+**Deploy** This solution is meant to be dockerized. It can be done with the following command:
 ```bash
-    npm run dev
+docker build -t fe_image .
 ```
 
-### Test project
+And then executed with the next docker command:
 
 ```bash
-    npm run test
+docker run --rm -p 3000:80 /
+    -e MY_APP_API_URL=api_url /
+    -e VITE_SET_BACKEND_URL=BASE_URL_TO_BACKEND_API /
+    fe_image
 ```
 
-### Building for production.
-
-```bash
-    npm run build
-```
-
-### Running the production server.
-
-```bash
-    npm run start
-```
+*It is recommended to run the app in a standard port. The internal nginx server runs on port 80*
