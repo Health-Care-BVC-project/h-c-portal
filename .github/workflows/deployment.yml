@@ -1,9 +1,10 @@
 name: Deploy HCPortal as docker image to Infra repository
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   deploy:
@@ -24,7 +25,7 @@ jobs:
       - run: |
           docker build -t ${{ secrets.ACR_NAME }}/hcportal-fe-image:latest .
           mkdir ./docker_image
-          docker save hcportal-fe-image:latest | gzip > ./docker_image/hcportal-fe-image.tar.gz
+          docker save hcportal-fe-image:latest > ./docker_image/hcportal-fe-image.tar
 
       - name: "Commit files"
         run: |
